@@ -17,7 +17,14 @@ while(a==0)
     end
     shotSpot= input("Choose a spot to shoot yout shot(1-6):");
     goalie = randi(5+1);
-    if 
+    if goalie==shotSpot
+        fprintf("The Penalty has been saved!");
+        fprintf("The score is 0-0");
+    else
+        frpintf("The Penalty was made!");
+        fprintf("The score is 1-0");
+    end
+    
     a=1;
 end
 end
