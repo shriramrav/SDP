@@ -1,18 +1,18 @@
 clc
 clear
 
-[mineGrid showGrid] = createGrid(10,8,10)
+[mineGrid showGrid] = createGrid(8,10,10)
 showGrid = click(5,7,showGrid)
 
-function [mineGrid showGrid] = createGrid(cols,rows,mines)
-    mineGrid = zeros(cols,rows);
-    showGrid = zeros(cols,rows)+9;
+function [mineGrid showGrid] = createGrid(y,x,mines)
+    mineGrid = zeros(x,y);
+    showGrid = zeros(x,y)+9;
     numMines = 0;
     while numMines<mines
-       xCor = randi(rows);
-       yCor = randi(cols);
-       if mineGrid(yCor,xCor)~= 1
-          mineGrid(yCor,xCor) = -1;
+       xCor = randi(x);
+       yCor = randi(y);
+       if mineGrid(xCor,yCor)~= 1
+          mineGrid(xCor,yCor) = -1;
           numMines = numMines+1;
        end
     end
