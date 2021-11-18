@@ -20,5 +20,53 @@ function [mineGrid showGrid] = createGrid(y,x,mines)
 end
 
 function showGrid = click(y,x,showGrid)
-    showGrid(x,y) = 0;
+    showGrid(x,y) = 10;
 end
+
+function [numMinesAround,mineGrid] = calcNums(y,x,mineGrid)
+    numMinesAround = 0;
+    countX = width(mineGrid);
+    countY = height(mineGrid);
+    
+    if(y==0)
+        if(x==0)
+            numMinesAround = numMinesAround + countMine(x+1,y);
+            numMinesAround = numMinesAround + countMine(x+1,y+1);
+            numMinesAround = numMinesAround + countMine(x,y+1);
+        elseif(x == countX)
+            numMinesAround = numMinesAround + countMine(x-1,y);
+            numMinesAround = numMinesAround + countMine(x-1,y+1);
+            numMinesAround = numMinesAround + countMine(x,y+1);
+        else
+            numMinesAround = numMinesAround + countMine(x-1,y);
+            numMinesAround = numMinesAround + countMine(x-1,y+1);
+            numMinesAround = numMinesAround + countMine(x,y+1);
+            numMinesAround = numMinesAround + countMine(x+1,y);
+            numMinesAround = numMinesAround + countMine(x+1,y+1);
+        end
+    elseif(y==countY)
+        if(x==0)
+            numMinesAround = numMinesAround + countMine(x+1,y);
+            numMinesAround = numMinesAround + countMine(x+1,y-1);
+            numMinesAround = numMinesAround + countMine(x,y-1);
+        elseif(x == countX)
+            numMinesAround = numMinesAround + countMine(x-1,y);
+            numMinesAround = numMinesAround + countMine(x-1,y-1);
+            numMinesAround = numMinesAround + countMine(x,y-1);
+        else
+            numMinesAround = numMinesAround + countMine(x-1,y);
+            numMinesAround = numMinesAround + countMine(x-1,y-1);
+            numMinesAround = numMinesAround + countMine(x,y-1);
+            numMinesAround = numMinesAround + countMine(x+1,y);
+            numMinesAround = numMinesAround + countMine(x+1,y-1);
+        end
+    end
+end
+
+function numMines = countMine(y,x,mineGrid)
+    numMines = 0;
+    if(mineGrid(x,y)<0)
+        numMines = numMines+1;
+    end
+end
+
