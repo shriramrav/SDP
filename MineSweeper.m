@@ -1,9 +1,9 @@
 clc
 clear
-xAmount = 2;
-yAmount = 2;
+xAmount = 8;
+yAmount = 10;
 totalBlocks = xAmount*yAmount;
-mineAmount = 3;
+mineAmount = 10;
 mineAmount
 [mineGrid, showGrid] = createGrid(xAmount,yAmount,mineAmount)
 flagLoss = 0;
@@ -12,7 +12,6 @@ while(flagLoss == 0&& flagWin == 0)
     x = input("Input x coordinate(Top Left is (1,1)): ");
     y = input("Input y coordinate(Top Left is (1,1)): ");
     [showGrid,flagLoss] = click(x,y,showGrid,mineGrid);
-    clc
     [flagWin,minesLeft] = checkWin(xAmount,yAmount,showGrid,mineAmount);
     minesLeft
     mineGrid
@@ -68,76 +67,32 @@ function [showGrid,flagLoss] = click(y,x,showGrid,mineGrid)
     if (mineGrid(x,y)==-1)
         showGrid(x,y) = mineGrid(x,y);
         flagLoss =1;
-%     elseif(mineGrid(x,y)==0)
-%         showGrid = zeroClicked(x,y,showGrid,mineGrid)
+    elseif(mineGrid(x,y)==0)
+         showGrid = zeroClicked(x,y,showGrid,mineGrid);
     else
         showGrid(x,y) = mineGrid(x,y);
     end
 end
 
-% function showGrid = zeroClicked(x,y,showGrid,mineGrid)
-%     if(mineGrid(x,y)==0)
-%         countX = width(mineGrid);
-%         countY = height(mineGrid);
-%         showGrid(x,y) = mineGrid(x,y);
-%         if(y==1)
-%             if(x==1)
-%                 showGrid = zeroClicked(x+1,y,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x+1,y+1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x,y+1,showGrid,mineGrid);
-%             elseif(x == countX)
-%                 showGrid = zeroClicked(x-1,y,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x-1,y+1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x,y+1,showGrid,mineGrid);
-%             else
-%                 showGrid = zeroClicked(x-1,y,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x-1,y+1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x,y+1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x+1,y,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x+1,y+1,showGrid,mineGrid);
-%             end
-%         elseif(y==countY)
-%             if(x==1)
-%                 showGrid = zeroClicked(x+1,y,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x+1,y-1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x,y-1,showGrid,mineGrid);
-%             elseif(x == countX)
-%                 showGrid = zeroClicked(x-1,y,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x-1,y-1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x,y-1,showGrid,mineGrid);
-%             else
-%                 showGrid = zeroClicked(x-1,y,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x-1,y-1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x,y-1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x+1,y,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x+1,y-1,showGrid,mineGrid);
-%             end
-%         else
-%             if(x==1)
-%                 showGrid = zeroClicked(x,y-1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x+1,y-1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x+1,y,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x+1,y+1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x,y+1,showGrid,mineGrid);
-%             elseif(x==countX)
-%                 showGrid = zeroClicked(x,y-1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x-1,y-1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x-1,y,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x-1,y+1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x,y+1,showGrid,mineGrid);
-%             else
-%                 showGrid = zeroClicked(x,y-1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x+1,y-1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x+1,y,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x+1,y+1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x,y+1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x-1,y+1,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x-1,y,showGrid,mineGrid);
-%                 showGrid = zeroClicked(x-1,y-1,showGrid,mineGrid);
-%             end    
-%         end
-%     end
-% end
+function showGrid = zeroClicked(x,y,showGrid,mineGrid)
+    countX = width(mineGrid);
+    countY = height(mineGrid);
+    if(y<1||y>countX||x<1||x>countY)
+        return;
+    elseif(mineGrid(x,y)==0 && showGrid(x,y) ~= mineGrid(x,y))
+        showGrid(x,y) = mineGrid(x,y);
+        showGrid = zeroClicked(x,y-1,showGrid,mineGrid);
+        showGrid = zeroClicked(x+1,y-1,showGrid,mineGrid);
+        showGrid = zeroClicked(x+1,y,showGrid,mineGrid);
+        showGrid = zeroClicked(x+1,y+1,showGrid,mineGrid);
+        showGrid = zeroClicked(x,y+1,showGrid,mineGrid);
+        showGrid = zeroClicked(x-1,y+1,showGrid,mineGrid);
+        showGrid = zeroClicked(x-1,y,showGrid,mineGrid);
+        showGrid = zeroClicked(x-1,y-1,showGrid,mineGrid);
+    else
+        return;
+    end
+end
 
 function numMinesAround = calcNums(y,x,mineGrid)
     numMinesAround = 0;
