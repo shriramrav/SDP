@@ -1,5 +1,6 @@
 clc
 clear
+%MineSweeper
 xAmount = 8;
 yAmount = 10;
 totalBlocks = xAmount*yAmount;
