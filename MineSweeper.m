@@ -64,7 +64,6 @@ end
 
 function [showGrid,flagLoss] = click(y,x,showGrid,mineGrid)
     flagLoss = 0;
-    
     if (mineGrid(x,y)==-1)
         showGrid(x,y) = mineGrid(x,y);
         flagLoss =1;
@@ -82,6 +81,7 @@ function showGrid = zeroClicked(x,y,showGrid,mineGrid)
         return;
     elseif(mineGrid(x,y)==0 && showGrid(x,y) ~= mineGrid(x,y))
         showGrid(x,y) = mineGrid(x,y);
+        flagLoss = 0;
         showGrid = zeroClicked(x,y-1,showGrid,mineGrid);
         showGrid = zeroClicked(x+1,y-1,showGrid,mineGrid);
         showGrid = zeroClicked(x+1,y,showGrid,mineGrid);
@@ -90,6 +90,16 @@ function showGrid = zeroClicked(x,y,showGrid,mineGrid)
         showGrid = zeroClicked(x-1,y+1,showGrid,mineGrid);
         showGrid = zeroClicked(x-1,y,showGrid,mineGrid);
         showGrid = zeroClicked(x-1,y-1,showGrid,mineGrid);
+        if(~(y<=1||y>=countX||x<=1||x>=countY))
+            [showGrid,flagLoss] = click(y,x-1,showGrid,mineGrid);
+            [showGrid,flagLoss] = click(y+1,x-1,showGrid,mineGrid);
+            [showGrid,flagLoss] = click(y+1,x,showGrid,mineGrid);
+            [showGrid,flagLoss] = click(y+1,x+1,showGrid,mineGrid);
+            [showGrid,flagLoss] = click(y,x+1,showGrid,mineGrid);
+            [showGrid,flagLoss] = click(y-1,x+1,showGrid,mineGrid);
+            [showGrid,flagLoss] = click(y-1,x,showGrid,mineGrid);
+            [showGrid,flagLoss] = click(y-1,x-1,showGrid,mineGrid);
+        end
     else
         return;
     end
